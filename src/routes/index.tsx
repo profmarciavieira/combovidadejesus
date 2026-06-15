@@ -94,6 +94,16 @@ function Carousel() {
     slide?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   };
 
+  const prev = () => {
+    const nextIdx = Math.max(0, idx - 1);
+    scrollTo(nextIdx);
+  };
+
+  const next = () => {
+    const nextIdx = Math.min(HISTORIAS.length - 1, idx + 1);
+    scrollTo(nextIdx);
+  };
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -107,7 +117,23 @@ function Carousel() {
   }, []);
 
   return (
-    <div>
+    <div className="relative">
+      <button
+        onClick={prev}
+        aria-label="Anterior"
+        className="absolute left-2 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-[oklch(0.4_0.1_240)] shadow-lg ring-1 ring-[var(--sky-soft)] backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95 sm:left-4 sm:h-12 sm:w-12"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+
+      <button
+        onClick={next}
+        aria-label="Próximo"
+        className="absolute right-2 top-1/2 z-10 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-[oklch(0.4_0.1_240)] shadow-lg ring-1 ring-[var(--sky-soft)] backdrop-blur-sm transition hover:bg-white hover:scale-110 active:scale-95 sm:right-4 sm:h-12 sm:w-12"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+
       <div
         ref={ref}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
