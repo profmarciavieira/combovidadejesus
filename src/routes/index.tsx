@@ -216,11 +216,11 @@ function Landing() {
             Fotos reais do material aplicado em sala. 📸
           </p>
 
-          <div className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="mx-auto mt-6 grid max-w-2xl grid-cols-1 place-items-center gap-4">
             {IMPRESSOS.map((src, i) => (
               <div
                 key={i}
-                className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-white shadow-[0_20px_40px_-20px_oklch(0.6_0.1_240/0.35)] ring-4 ring-white"
+                className="relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-[0_20px_40px_-20px_oklch(0.6_0.1_240/0.35)] ring-4 ring-white"
               >
                 <img src={src} alt={`Material impresso ${i + 1}`} className="h-full w-full object-cover" loading="lazy" />
                 <span className="absolute bottom-3 left-3 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold text-[oklch(0.4_0.1_240)] shadow">
