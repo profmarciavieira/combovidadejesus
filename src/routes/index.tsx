@@ -30,10 +30,8 @@ const HISTORIAS = [
   "https://i.postimg.cc/CMt5Rz6W/14.png",
 ];
 
-// 2 fotos reais do material impresso (reaproveitando imagens disponíveis)
 const IMPRESSOS = [
-  "https://i.postimg.cc/Rh30PBN6/8.png",
-  "https://i.postimg.cc/wMSjZGmw/12.png",
+  "https://i.postimg.cc/QM2sXTM0/CRIATIVOS-DAS-LUVAS-HISTORIA-VIDA-DE-JESUS-(2).png",
 ];
 
 const CHECKOUT_URL = "#comprar";
