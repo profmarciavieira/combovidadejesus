@@ -21,20 +21,31 @@ export const Route = createFileRoute("/")({
 
 const HERO_IMG = "https://i.postimg.cc/ZKs5G06G/CRIATIVOS-DAS-LUVAS-HISTORIA-VIDA-DE-JESUS-1.png";
 
-const HISTORIAS = [
-  "https://i.postimg.cc/Rh30PBN6/8.png",
-  "https://i.postimg.cc/5yHtPV6t/10.png",
-  "https://i.postimg.cc/wMSjZGmw/12.png",
-  "https://i.postimg.cc/59GyX6RW/13.png",
-  "https://i.postimg.cc/6q7QHXy5/11.png",
-  "https://i.postimg.cc/CMt5Rz6W/14.png",
+const HISTORIAS: { src: string; title: string }[] = [
+  { src: "https://i.postimg.cc/Rh30PBN6/8.png", title: "Simeão e Ana Viram Jesus" },
+  { src: "https://i.postimg.cc/5yHtPV6t/10.png", title: "Jesus no Templo" },
+  { src: "https://i.postimg.cc/wMSjZGmw/12.png", title: "João Batista" },
+  { src: "https://i.postimg.cc/59GyX6RW/13.png", title: "Jesus é Batizado" },
+  { src: "https://i.postimg.cc/6q7QHXy5/11.png", title: "A Tentação de Jesus no Deserto" },
+  { src: "https://i.postimg.cc/CMt5Rz6W/14.png", title: "Jesus Escolhe Seus Discípulos" },
 ];
 
 const IMPRESSOS = [
   "https://i.postimg.cc/QM2sXTM0/CRIATIVOS-DAS-LUVAS-HISTORIA-VIDA-DE-JESUS-(2).png",
 ];
 
-const CHECKOUT_URL = "#comprar";
+const CHECKOUT_URL = "https://pay.kiwify.com.br/V2yhvA3";
+const PIXEL_ID = "861117286192087";
+
+function trackCheckout() {
+  try {
+    // @ts-ignore
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      // @ts-ignore
+      window.fbq("track", "InitiateCheckout");
+    }
+  } catch {}
+}
 
 const ITENS = [
   { emoji: "🧤", label: "Luva Interativa", bg: "oklch(0.92 0.12 145)", fg: "oklch(0.32 0.12 145)" },
@@ -51,6 +62,9 @@ function CTA({ children, className = "" }: { children: React.ReactNode; classNam
   return (
     <a
       href={CHECKOUT_URL}
+      onClick={trackCheckout}
+      target="_blank"
+      rel="noopener noreferrer"
       className={`inline-flex w-full items-center justify-center rounded-full bg-[var(--success)] px-6 py-5 text-base font-extrabold text-white shadow-[0_14px_30px_-10px_oklch(0.7_0.18_145/0.7)] transition hover:bg-[var(--success-hover)] hover:-translate-y-0.5 active:translate-y-0 sm:text-lg ${className}`}
     >
       {children}
@@ -87,30 +101,37 @@ function Carousel() {
   const ref = useRef<HTMLDivElement>(null);
   const [idx, setIdx] = useState(0);
 
-  const scrollTo = (i: number) => {
+  const scrollToIndex = (i: number) => {
     const el = ref.current;
     if (!el) return;
-    const slide = el.children[i] as HTMLElement;
-    slide?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const clamped = Math.min(HISTORIAS.length - 1, Math.max(0, i));
+    const slide = el.children[clamped] as HTMLElement | undefined;
+    if (!slide) return;
+    const target = slide.offsetLeft - (el.clientWidth - slide.clientWidth) / 2;
+    el.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+    setIdx(clamped);
   };
 
-  const prev = () => {
-    const nextIdx = Math.max(0, idx - 1);
-    scrollTo(nextIdx);
-  };
-
-  const next = () => {
-    const nextIdx = Math.min(HISTORIAS.length - 1, idx + 1);
-    scrollTo(nextIdx);
-  };
+  const prev = () => scrollToIndex(idx - 1);
+  const next = () => scrollToIndex(idx + 1);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const onScroll = () => {
-      const w = el.clientWidth;
-      const i = Math.round(el.scrollLeft / (w * 0.85));
-      setIdx(Math.min(HISTORIAS.length - 1, Math.max(0, i)));
+      const center = el.scrollLeft + el.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      for (let i = 0; i < el.children.length; i++) {
+        const child = el.children[i] as HTMLElement;
+        const childCenter = child.offsetLeft + child.clientWidth / 2;
+        const d = Math.abs(childCenter - center);
+        if (d < bestDist) {
+          bestDist = d;
+          best = i;
+        }
+      }
+      setIdx(best);
     };
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
@@ -138,14 +159,17 @@ function Carousel() {
         ref={ref}
         className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {HISTORIAS.map((src, i) => (
+        {HISTORIAS.map((h, i) => (
           <div
             key={i}
             className="relative aspect-square w-[82%] shrink-0 snap-center overflow-hidden rounded-3xl bg-[var(--sky-soft)] shadow-[0_20px_40px_-20px_oklch(0.6_0.1_240/0.4)] ring-4 ring-white sm:w-[55%] md:w-[38%]"
           >
-            <img src={src} alt={`História ${i + 1}`} className="h-full w-full object-cover" loading="lazy" />
+            <img src={h.src} alt={h.title} className="h-full w-full object-cover" loading="lazy" />
             <div className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-[oklch(0.4_0.1_240)] shadow">
               {i + 1} / {HISTORIAS.length}
+            </div>
+            <div className="absolute bottom-3 left-3 right-3 rounded-2xl bg-white/95 px-3 py-2 text-center text-sm font-extrabold text-[oklch(0.35_0.12_240)] shadow">
+              {h.title}
             </div>
           </div>
         ))}
@@ -155,7 +179,7 @@ function Carousel() {
           <button
             key={i}
             aria-label={`Ir para slide ${i + 1}`}
-            onClick={() => scrollTo(i)}
+            onClick={() => scrollToIndex(i)}
             className={`h-2 rounded-full transition-all ${i === idx ? "w-6 bg-[var(--sky)]" : "w-2 bg-border"}`}
           />
         ))}
@@ -165,8 +189,51 @@ function Carousel() {
 }
 
 function Landing() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    // @ts-ignore
+    if (window.fbq) {
+      // @ts-ignore
+      window.fbq("track", "PageView");
+      return;
+    }
+    // Meta Pixel base code
+    (function (f: any, b: any, e: string, v: string) {
+      let n: any;
+      let t: any;
+      let s: any;
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    // @ts-ignore
+    window.fbq("init", PIXEL_ID);
+    // @ts-ignore
+    window.fbq("track", "PageView");
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: "none" }}
+          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
+          alt=""
+        />
+      </noscript>
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[var(--sky-soft)] via-[oklch(0.97_0.04_90)] to-background pb-12 pt-8 sm:pt-12">
         <Sparkle className="left-6 top-10 text-2xl" char="☁️" />
@@ -332,7 +399,7 @@ function Landing() {
       </section>
 
       <footer className="py-8 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} Histórias Bíblicas Interativas
+        © Todos os direitos reservados — Professora Márcia Material Pedagógico
       </footer>
     </main>
   );
