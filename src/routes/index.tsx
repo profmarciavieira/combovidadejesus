@@ -398,6 +398,38 @@ function Landing() {
         </div>
       </section>
 
+      {/* DEPOIMENTOS */}
+      <section className="relative bg-[oklch(0.98_0.02_90)] py-14">
+        <Sparkle className="left-6 top-8 text-xl" char="⭐" />
+        <Sparkle className="right-6 top-10 text-lg" char="❤️" />
+        <div className="relative mx-auto max-w-md px-5 sm:max-w-4xl">
+          <h2 className="text-center text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            💬 O QUE AS PROFESSORAS ESTÃO DIZENDO
+          </h2>
+          <p className="mx-auto mt-2 max-w-md text-center text-sm text-muted-foreground">
+            Quem já utiliza os materiais da Professora Márcia aprova e recomenda.
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {[
+              { stars: "⭐⭐⭐⭐⭐", text: "Material maravilhoso! As crianças participaram muito mais da aula e ficaram encantadas com a luva bíblica." },
+              { stars: "⭐⭐⭐⭐⭐", text: "Prático, bonito e fácil de aplicar. Economizei horas de preparação." },
+              { stars: "⭐⭐⭐⭐⭐", text: "Os recursos visuais prenderam a atenção das crianças do começo ao fim." },
+            ].map((d, i) => (
+              <div
+                key={i}
+                className="rounded-3xl bg-white p-5 text-center shadow-[0_12px_24px_-14px_oklch(0.6_0.1_240/0.35)] ring-4 ring-white"
+              >
+                <div className="text-lg">{d.stars}</div>
+                <p className="mt-3 text-sm font-semibold leading-relaxed text-foreground">
+                  "{d.text}"
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <footer className="py-8 text-center text-xs text-muted-foreground">
         © Todos os direitos reservados — Professora Márcia Material Pedagógico
       </footer>
