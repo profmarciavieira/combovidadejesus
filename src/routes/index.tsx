@@ -206,13 +206,20 @@ function Landing() {
           </div>
 
           <h1 className="text-center text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
-            COMBO HISTÓRIAS<br />
-            <span className="text-[oklch(0.55_0.15_240)]">BÍBLICAS INTERATIVAS</span>
+            PARE DE CRIAR<br />
+            <span className="text-[oklch(0.55_0.15_240)]">ATIVIDADES DO ZERO.</span>
           </h1>
 
           <p className="mx-auto mt-3 max-w-md text-center text-sm leading-relaxed text-muted-foreground sm:text-base">
-            6 histórias completas com <b className="text-foreground">luvas bíblicas</b>, atividades pedagógicas, jogos educativos, coroas temáticas e plano de aula prontos para imprimir.
+            Receba <b className="text-foreground">6 histórias bíblicas completas</b> com jogos educativos, atividades pedagógicas, coroas temáticas e planos de aula prontos para imprimir.
           </p>
+
+          <ul className="mx-auto mt-4 max-w-md space-y-1.5 text-sm text-foreground sm:text-base">
+            <li className="flex items-start gap-2"><span className="font-bold text-[oklch(0.5_0.18_145)]">✓</span> Economize horas de preparação</li>
+            <li className="flex items-start gap-2"><span className="font-bold text-[oklch(0.5_0.18_145)]">✓</span> Prenda a atenção das crianças</li>
+            <li className="flex items-start gap-2"><span className="font-bold text-[oklch(0.5_0.18_145)]">✓</span> Material pronto para imprimir e usar hoje</li>
+            <li className="flex items-start gap-2"><span className="font-bold text-[oklch(0.5_0.18_145)]">✓</span> Ideal para professoras e ministério infantil</li>
+          </ul>
 
           <div className="relative mx-auto mt-6 aspect-square w-full max-w-sm overflow-hidden rounded-[2rem] bg-white shadow-[0_30px_60px_-20px_oklch(0.6_0.15_240/0.4)] ring-4 ring-white">
             <img src={HERO_IMG} alt="Combo Histórias Bíblicas Interativas" className="h-full w-full object-cover" />
