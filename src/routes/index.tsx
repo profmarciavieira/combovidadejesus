@@ -35,7 +35,6 @@ const IMPRESSOS = [
 ];
 
 const CHECKOUT_URL = "https://pay.kiwify.com.br/V2yhvA3";
-const PIXEL_ID = "861117286192087";
 
 function trackCheckout() {
   try {
@@ -192,15 +191,6 @@ function Landing() {
 
   return (
     <main className="min-h-screen bg-background">
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          src={`https://www.facebook.com/tr?id=${PIXEL_ID}&ev=PageView&noscript=1`}
-          alt=""
-        />
-      </noscript>
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[var(--sky-soft)] via-[oklch(0.97_0.04_90)] to-background pb-12 pt-8 sm:pt-12">
         <Sparkle className="left-6 top-10 text-2xl" char="☁️" />
